@@ -1,1 +1,37 @@
-async function sha256(t){const e=new TextEncoder().encode(t),n=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(n)).map(e=>e.toString(16).padStart(2,'0')).join('')}function users(){return JSON.parse(localStorage.getItem('users')||'[]')}function saveUsers(e){localStorage.setItem('users',JSON.stringify(e))}async function registerUser(e,t,a){const s=getLang();if(!e||!t||!a){alert(i18n[s].needUserPass);return!1}if(t!==a){alert(i18n[s].needMatchPass);return!1}const n=users();if(n.find(t=>t.u.toLowerCase()===e.toLowerCase())){alert(i18n[s].userExists);return!1}const r=await sha256(t);n.push({u:e,h:r});saveUsers(n);alert(i18n[s].userCreated);return!0}async function loginUser(e,t){const a=getLang();if(!e||!t){alert(i18n[a].needUserPass);return!1}const s=users(),n=await sha256(t),r=s.find(t=>t.u.toLowerCase()===e.toLowerCase()&&t.h===n);if(!r){alert(i18n[a].invalidCreds);return!1}localStorage.setItem('loggedUser',r.u);return!0}function requireAuth(){localStorage.getItem('loggedUser')|| (window.location.href='login.html')}function logout(){localStorage.removeItem('loggedUser');window.location.href='login.html'}
+// Simple authentication using localStorage
+
+document.addEventListener("DOMContentLoaded", () => {
+  const regForm = document.getElementById("registerForm");
+  const loginForm = document.getElementById("loginForm");
+
+  // Register a new user
+  if (regForm) {
+    regForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("regName").value;
+      const email = document.getElementById("regEmail").value;
+      const password = document.getElementById("regPassword").value;
+
+      localStorage.setItem("user", JSON.stringify({ name, email, password }));
+      alert("Registration successful! Please log in.");
+      window.location.href = "login.html";
+    });
+  }
+
+  // Login existing user
+  if (loginForm) {
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (user && user.email === email && user.password === password) {
+        alert(`Welcome back, ${user.name}!`);
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Invalid email or password. Try again.");
+      }
+    });
+  }
+});
