@@ -3,37 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>لوحة الفواتير - Smart Invoices</title>
+  <title>📊 لوحة الفواتير - Smart Invoices</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
     <h1>📊 لوحة الفواتير</h1>
     <p>مرحبًا <span id="userName"></span> 👋</p>
-    
+
     <form id="invoiceForm">
-      <label>اسم الفاتورة:</label>
-      <input type="text" id="invoiceName" required>
-      <label>المبلغ (ريال):</label>
-      <input type="number" id="invoiceAmount" required>
-      <label>التاريخ:</label>
+      <label for="invoiceName">اسم الفاتورة:</label>
+      <input type="text" id="invoiceName" placeholder="مثال: مشتريات سوبرماركت" required>
+
+      <label for="invoiceAmount">المبلغ (ريال):</label>
+      <input type="number" id="invoiceAmount" placeholder="مثال: 2030" required>
+
+      <label for="invoiceDate">التاريخ:</label>
       <input type="date" id="invoiceDate" required>
+
       <button type="submit">➕ إضافة الفاتورة</button>
     </form>
 
-    <h2>قائمة الفواتير</h2>
+    <h2>🧾 قائمة الفواتير</h2>
     <table border="1" width="100%">
       <thead>
         <tr>
           <th>الاسم</th>
           <th>المبلغ (ريال)</th>
           <th>التاريخ</th>
+          <th>إجراء</th>
         </tr>
       </thead>
       <tbody id="invoiceList"></tbody>
     </table>
 
-    <button onclick="logout()">🚪 تسجيل الخروج</button>
+    <button class="logout-btn" onclick="logout()">🚪 تسجيل الخروج</button>
   </div>
 
   <script src="dashboard.js"></script>
