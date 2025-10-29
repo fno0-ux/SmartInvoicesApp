@@ -12,38 +12,42 @@
 </head>
 <body>
   <div class="container">
-    <h1>📊 لوحة الفواتير</h1>
-    <p>مرحبًا <span id="userName"></span> 👋</p>
+    <div class="lang-switch">
+      <button id="langBtn">🌐 English</button>
+    </div>
+
+    <h1 id="title">📊 لوحة الفواتير</h1>
+    <p><span id="greet">مرحبًا</span> <span id="userName"></span> 👋</p>
 
     <form id="invoiceForm">
-      <label for="invoiceName">اسم الفاتورة:</label>
+      <label id="labelName" for="invoiceName">اسم الفاتورة:</label>
       <input type="text" id="invoiceName" placeholder="مثال: فاتورة جوال" required>
 
-      <label for="invoiceAmount">المبلغ (ريال):</label>
+      <label id="labelAmount" for="invoiceAmount">المبلغ (ريال):</label>
       <input type="number" id="invoiceAmount" placeholder="مثال: 2500" required>
 
-      <label for="invoiceDate">التاريخ:</label>
+      <label id="labelDate" for="invoiceDate">التاريخ:</label>
       <input type="date" id="invoiceDate" required>
 
-      <label for="invoiceWarranty">مدة الضمان (بالأشهر):</label>
+      <label id="labelWarranty" for="invoiceWarranty">مدة الضمان (بالأشهر):</label>
       <input type="number" id="invoiceWarranty" placeholder="مثال: 12" required>
 
-      <label for="invoiceImage">📷 صورة الضمان:</label>
+      <label id="labelImage" for="invoiceImage">📷 صورة الضمان:</label>
       <input type="file" id="invoiceImage" accept="image/*,application/pdf">
 
-      <button type="submit">➕ إضافة الفاتورة</button>
+      <button type="submit" id="addBtn">➕ إضافة الفاتورة</button>
     </form>
 
-    <h2>🧾 قائمة الفواتير</h2>
+    <h2 id="listTitle">🧾 قائمة الفواتير</h2>
     <table border="1" width="100%">
       <thead>
         <tr>
-          <th>الاسم</th>
-          <th>المبلغ (ريال)</th>
-          <th>التاريخ</th>
-          <th>الضمان (أشهر)</th>
-          <th>صورة الضمان</th>
-          <th>إجراء</th>
+          <th id="thName">الاسم</th>
+          <th id="thAmount">المبلغ (ريال)</th>
+          <th id="thDate">التاريخ</th>
+          <th id="thWarranty">الضمان (أشهر)</th>
+          <th id="thImage">صورة الضمان</th>
+          <th id="thAction">إجراء</th>
         </tr>
       </thead>
       <tbody id="invoiceList"></tbody>
@@ -54,7 +58,7 @@
       <button id="pdfBtn">📄 حفظ كـ PDF</button>
     </div>
 
-    <button class="logout-btn" onclick="logout()">🚪 تسجيل الخروج</button>
+    <button class="logout-btn" id="logoutBtn" onclick="logout()">🚪 تسجيل الخروج</button>
   </div>
 
   <script src="dashboard.js"></script>
