@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>📊 لوحة الفواتير - Smart Invoices</title>
   <link rel="stylesheet" href="styles.css">
+
+  <!-- مكتبات التصوير و PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -13,13 +17,19 @@
 
     <form id="invoiceForm">
       <label for="invoiceName">اسم الفاتورة:</label>
-      <input type="text" id="invoiceName" placeholder="مثال: مشتريات سوبرماركت" required>
+      <input type="text" id="invoiceName" placeholder="مثال: فاتورة جوال" required>
 
       <label for="invoiceAmount">المبلغ (ريال):</label>
-      <input type="number" id="invoiceAmount" placeholder="مثال: 2030" required>
+      <input type="number" id="invoiceAmount" placeholder="مثال: 2500" required>
 
       <label for="invoiceDate">التاريخ:</label>
       <input type="date" id="invoiceDate" required>
+
+      <label for="invoiceWarranty">مدة الضمان (بالأشهر):</label>
+      <input type="number" id="invoiceWarranty" placeholder="مثال: 12" required>
+
+      <label for="invoiceImage">📷 صورة الضمان:</label>
+      <input type="file" id="invoiceImage" accept="image/*,application/pdf">
 
       <button type="submit">➕ إضافة الفاتورة</button>
     </form>
@@ -31,11 +41,18 @@
           <th>الاسم</th>
           <th>المبلغ (ريال)</th>
           <th>التاريخ</th>
+          <th>الضمان (أشهر)</th>
+          <th>صورة الضمان</th>
           <th>إجراء</th>
         </tr>
       </thead>
       <tbody id="invoiceList"></tbody>
     </table>
+
+    <div style="margin-top: 15px;">
+      <button id="captureBtn">📸 تصوير الفواتير</button>
+      <button id="pdfBtn">📄 حفظ كـ PDF</button>
+    </div>
 
     <button class="logout-btn" onclick="logout()">🚪 تسجيل الخروج</button>
   </div>
