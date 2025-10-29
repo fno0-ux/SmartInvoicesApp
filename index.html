@@ -1,1 +1,23 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Smart Invoices</title><link rel='stylesheet' href='styles.css'><script src='i18n.js'></script><script src='auth.js'></script></head><body><div style='padding:24px'><h1>Smart Invoices</h1><p>Start from <a href='login.html'>login.html</a>.</p></div><script src='app.js'></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Invoices | Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Smart Invoices</h1>
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" id="loginEmail" required>
+      <label>Password</label>
+      <input type="password" id="loginPassword" required>
+      <button type="submit">Login</button>
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </form>
+  </div>
+  <script src="auth.js"></script>
+</body>
+</html>
