@@ -1,4 +1,5 @@
 {
+  "id": "smart.invoices.app",
   "name": "Smart Invoices",
   "short_name": "Invoices",
   "description": "تطبيق لإدارة وتتبع الفواتير بسهولة وأمان باستخدام واجهة عربية وإنجليزية.",
@@ -7,16 +8,31 @@
   "background_color": "#f5f6f8",
   "theme_color": "#264653",
   "orientation": "portrait",
+  "categories": ["business", "finance", "productivity"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "type": "image/png",
+      "sizes": "800x600"
+    },
+    {
+      "src": "screenshot2.png",
+      "type": "image/png",
+      "sizes": "800x600"
     }
   ],
   "lang": "ar",
