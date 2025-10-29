@@ -1,4 +1,4 @@
-{{
+{
   "id": "smart.invoices.app",
   "name": "Smart Invoices",
   "short_name": "Invoices",
@@ -6,7 +6,6 @@
   "start_url": "index.html",
   "scope": "/SmartInvoicesApp/",
   "display": "standalone",
-  "display_override": ["standalone", "fullscreen"],
   "background_color": "#f5f6f8",
   "theme_color": "#264653",
   "orientation": "portrait",
@@ -23,33 +22,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshot1.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    },
-    {
-      "src": "screenshot2.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Add Invoice",
-      "url": "dashboard.html",
-      "description": "إضافة فاتورة جديدة بسرعة"
-    }
-  ],
-  "file_handlers": [
-    {
-      "action": "/",
-      "accept": {
-        "application/pdf": [".pdf"]
-      }
     }
   ],
   "lang": "ar",
