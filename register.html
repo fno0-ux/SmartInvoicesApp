@@ -1,25 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Invoices | Register</title>
+  <title>📝 تسجيل مستخدم جديد - Smart Invoices</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Create Account</h1>
+    <div class="lang-switch">
+      <button id="langBtn">🌐 English</button>
+    </div>
+
+    <h1 id="title">📝 تسجيل مستخدم جديد</h1>
+
     <form id="registerForm">
-      <label>Full Name</label>
-      <input type="text" id="regName" required>
-      <label>Email</label>
-      <input type="email" id="regEmail" required>
-      <label>Password</label>
-      <input type="password" id="regPassword" required>
-      <button type="submit">Register</button>
-      <p>Already registered? <a href="login.html">Login</a></p>
+      <label id="labelName" for="name">الاسم الكامل:</label>
+      <input type="text" id="name" placeholder="اكتب اسمك الكامل" required>
+
+      <label id="labelEmail" for="email">البريد الإلكتروني:</label>
+      <input type="email" id="email" placeholder="example@email.com" required>
+
+      <label id="labelPassword" for="password">كلمة المرور:</label>
+      <input type="password" id="password" placeholder="•••••••" required>
+
+      <button type="submit" id="registerBtn">تسجيل</button>
     </form>
+
+    <p id="haveAccount">لديك حساب؟ <a href="login.html" id="loginLink">تسجيل الدخول</a></p>
   </div>
-  <script src="auth.js"></script>
+
+  <script src="register.js"></script>
 </body>
 </html>
