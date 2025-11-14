@@ -1,3 +1,5 @@
+import { auth, signInWithEmailAndPassword } from "./firebase-config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const i18n = {
     ar: {
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const t = i18n[lang];
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
     document.getElementById("title").textContent = t.title;
     document.getElementById("labelEmail").textContent = t.email;
     document.getElementById("labelPassword").textContent = t.password;
@@ -37,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("noAccount").firstChild.textContent = t.noAccount + " ";
     document.getElementById("registerLink").textContent = t.register;
     document.getElementById("langBtn").textContent = t.langBtn;
+
     localStorage.setItem("lang", lang);
   }
 
@@ -47,8 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setLang(currentLang);
 
-  // 🔥 تسجيل الدخول السحابي باستخدام Firebase
+  // 🔥 تسجيل الدخول باستخدام Firebase (modular)
   const form = document.getElementById("loginForm");
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -56,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value;
 
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(auth, email, password);
 
       alert(i18n[currentLang].success);
       window.location.href = "dashboard.html";
@@ -65,5 +70,4 @@ document.addEventListener("DOMContentLoaded", () => {
       alert(i18n[currentLang].fail + "\n" + error.message);
     }
   });
-
 });
