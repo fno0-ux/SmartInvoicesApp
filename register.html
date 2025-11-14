@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>📝 تسجيل مستخدم جديد - Smart Invoices</title>
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Firebase المعتمدة -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+
+  <!-- ملف الإعدادات الخاص بك -->
+  <script src="firebase-config.js"></script>
 </head>
+
 <body>
   <div class="container">
     <div class="lang-switch">
@@ -30,6 +39,7 @@
     <p id="haveAccount">لديك حساب؟ <a href="login.html" id="loginLink">تسجيل الدخول</a></p>
   </div>
 
-  <script src="register.js"></script>
+  <!-- مهم جداً حتى يعمل Firebase بشكل صحيح مع register.js -->
+  <script type="module" src="register.js"></script>
 </body>
 </html>
