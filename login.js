@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
       login: "دخول",
       noAccount: "ليس لديك حساب؟",
       register: "تسجيل جديد",
-      langBtn: "🌐 English"
+      langBtn: "🌐 English",
+      success: "تم تسجيل الدخول بنجاح!",
+      fail: "بيانات الدخول غير صحيحة!"
     },
     en: {
       title: "🔐 Login",
@@ -16,7 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
       login: "Login",
       noAccount: "Don't have an account?",
       register: "Register",
-      langBtn: "🌐 العربية"
+      langBtn: "🌐 العربية",
+      success: "Login successful!",
+      fail: "Incorrect credentials!"
     }
   };
 
@@ -43,19 +47,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setLang(currentLang);
 
+  // 🔥 تسجيل الدخول السحابي باستخدام Firebase
   const form = document.getElementById("loginForm");
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
-    const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (storedUser && storedUser.email === email && storedUser.password === password) {
-      alert(currentLang === "ar" ? "تم تسجيل الدخول بنجاح!" : "Login successful!");
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+
+      alert(i18n[currentLang].success);
       window.location.href = "dashboard.html";
-    } else {
-      alert(currentLang === "ar" ? "بيانات الدخول غير صحيحة!" : "Incorrect credentials!");
+
+    } catch (error) {
+      alert(i18n[currentLang].fail + "\n" + error.message);
     }
   });
+
 });
