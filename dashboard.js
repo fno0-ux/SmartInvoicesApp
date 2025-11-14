@@ -1,5 +1,5 @@
 // =======================
-//  Dashboard.js (Firestore)
+//  Dashboard.js (Firestore + OCR)
 // =======================
 
 import { 
@@ -21,7 +21,9 @@ import {
 const auth = getAuth();
 const db = getFirestore();
 
+// =======================
 // التأكد من تسجيل الدخول
+// =======================
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     alert("الرجاء تسجيل الدخول أولاً");
@@ -30,7 +32,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   document.getElementById("userName").textContent = user.email.split("@")[0];
-
   await loadInvoices(user.uid);
 });
 
@@ -130,6 +131,45 @@ function toBase64(file) {
 }
 
 // =======================
+// OCR — قراءة النص من الصورة
+// =======================
+async function extractTextFromImage(base64) {
+  const result = await Tesseract.recognize(base64, "eng", {
+    logger: (m) => console.log(m)
+  });
+  return result.data.text;
+}
+
+// =======================
+// استخراج البيانات من النص
+// =======================
+function extractInvoiceData(text) {
+  const amountRegex = /\b\d+(\.\d{1,2})?\b/g;
+  const amounts = text.match(amountRegex);
+  const amount = amounts ? amounts[0] : "";
+
+  const dateRegex =
+    /\b(20\d{2}[-\/\. ]\d{1,2}[-\/\. ]\d{1,2})\b|\b(\d{1,2}[-\/\. ]\d{1,2}[-\/\. ]20\d{2})\b/;
+  const dateMatch = text.match(dateRegex);
+  const rawDate = dateMatch ? dateMatch[0] : "";
+
+  let formattedDate = "";
+  if (rawDate.includes("-") || rawDate.includes("/")) {
+    const parts = rawDate.split(/[-\/]/);
+    if (parts[0].length === 4) formattedDate = rawDate;
+    else formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+  }
+
+  const warrantyRegex = /\b(\d{1,2})\s*(month|months|شهر|شهور)\b/i;
+  const warrantyMatch = text.match(warrantyRegex);
+  const warranty = warrantyMatch ? warrantyMatch[1] : "";
+
+  const name = text.split("\n")[0].trim();
+
+  return { name, amount, date: formattedDate, warranty };
+}
+
+// =======================
 //  حفظ الفاتورة في Firestore
 // =======================
 async function saveInvoice(userId, invoice) {
@@ -179,20 +219,37 @@ document.getElementById("invoiceForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const user = auth.currentUser;
-  if (!user) return;
 
-  const name = document.getElementById("invoiceName").value;
-  const amount = document.getElementById("invoiceAmount").value;
-  const date = document.getElementById("invoiceDate").value;
-  const warranty = document.getElementById("invoiceWarranty").value;
+  const nameInput = document.getElementById("invoiceName");
+  const amountInput = document.getElementById("invoiceAmount");
+  const dateInput = document.getElementById("invoiceDate");
+  const warrantyInput = document.getElementById("invoiceWarranty");
   const fileInput = document.getElementById("invoiceImage");
 
   let imageBase64 = "";
+  let extracted = {};
+
   if (fileInput.files.length > 0) {
-    imageBase64 = await toBase64(fileInput.files[0]);
+    const file = fileInput.files[0];
+    imageBase64 = await toBase64(file);
+
+    const text = await extractTextFromImage(imageBase64);
+
+    extracted = extractInvoiceData(text);
+
+    if (extracted.name) nameInput.value = extracted.name;
+    if (extracted.amount) amountInput.value = extracted.amount;
+    if (extracted.date) dateInput.value = extracted.date;
+    if (extracted.warranty) warrantyInput.value = extracted.warranty;
   }
 
-  const invoice = { name, amount, date, warranty, image: imageBase64 };
+  const invoice = {
+    name: nameInput.value,
+    amount: amountInput.value,
+    date: dateInput.value,
+    warranty: warrantyInput.value,
+    image: imageBase64
+  };
 
   await saveInvoice(user.uid, invoice);
   await loadInvoices(user.uid);
@@ -205,14 +262,7 @@ document.getElementById("invoiceForm").addEventListener("submit", async (e) => {
 // =======================
 document.getElementById("pdfBtn").addEventListener("click", () => {
   const element = document.querySelector("table");
-  const opt = {
-    margin: 0.5,
-    filename: "invoices.pdf",
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
-  };
-  html2pdf().from(element).set(opt).save();
+  html2pdf().from(element).save("invoices.pdf");
 });
 
 // =======================
