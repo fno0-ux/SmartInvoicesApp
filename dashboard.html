@@ -4,25 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>📊 لوحة الفواتير - Smart Invoices</title>
+
   <link rel="stylesheet" href="styles.css">
 
-  <!-- html2canvas + pdf -->
+  <!-- مكتبات الصور و PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  <!-- Firebase -->
+  <!-- Firebase الأساسية -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"></script>
 
-  <!-- إعداد Firebase الخاص بمشروعك -->
+  <!-- ملف الإعدادات (يجب أن يحتوي على firebaseConfig) -->
   <script src="firebase-config.js"></script>
+
 </head>
 
 <body>
   <div class="container">
 
+    <!-- زر اللغة -->
     <div class="lang-switch">
       <button id="langBtn">🌐 English</button>
     </div>
@@ -30,6 +32,7 @@
     <h1 id="title">📊 لوحة الفواتير</h1>
     <p><span id="greet">مرحبًا</span> <span id="userName"></span> 👋</p>
 
+    <!-- نموذج إضافة الفاتورة -->
     <form id="invoiceForm">
 
       <label id="labelImage" for="invoiceImage">📷 صورة الفاتورة:</label>
@@ -50,6 +53,7 @@
       <button type="submit" id="addBtn">➕ إضافة الفاتورة</button>
     </form>
 
+    <!-- قائمة الفواتير -->
     <h2 id="listTitle">🧾 قائمة الفواتير</h2>
 
     <table border="1" width="100%">
@@ -66,12 +70,16 @@
       <tbody id="invoiceList"></tbody>
     </table>
 
+    <!-- PDF -->
     <button id="pdfBtn">📄 حفظ كـ PDF</button>
 
+    <!-- تسجيل خروج -->
     <button class="logout-btn" id="logoutBtn">🚪 تسجيل الخروج</button>
+
   </div>
 
-  <!-- dashboard.js الجديد بالكامل -->
+  <!-- ملف جافاسكربت الخاص باللوحة (يجب أن يكون Module) -->
   <script type="module" src="dashboard.js"></script>
+
 </body>
 </html>
