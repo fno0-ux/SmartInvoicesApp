@@ -1,3 +1,9 @@
+// register.js (بعد التعديل الكامل للعمل مع Firebase)
+
+import { auth, db } from "./firebase-config.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const i18n = {
     ar: {
@@ -8,7 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
       register: "تسجيل",
       haveAccount: "لديك حساب؟",
       login: "تسجيل الدخول",
-      langBtn: "🌐 English"
+      langBtn: "🌐 English",
+      success: "تم التسجيل بنجاح!",
+      fail: "حدث خطأ أثناء التسجيل:"
     },
     en: {
       title: "📝 New User Registration",
@@ -18,7 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
       register: "Register",
       haveAccount: "Already have an account?",
       login: "Login",
-      langBtn: "🌐 العربية"
+      langBtn: "🌐 العربية",
+      success: "Registration successful!",
+      fail: "Registration error:"
     }
   };
 
@@ -26,8 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setLang(lang) {
     const t = i18n[lang];
+
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
     document.getElementById("title").textContent = t.title;
     document.getElementById("labelName").textContent = t.name;
     document.getElementById("labelEmail").textContent = t.email;
@@ -36,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("haveAccount").firstChild.textContent = t.haveAccount + " ";
     document.getElementById("loginLink").textContent = t.login;
     document.getElementById("langBtn").textContent = t.langBtn;
+
     localStorage.setItem("lang", lang);
   }
 
@@ -46,18 +59,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setLang(currentLang);
 
+  // 🔥 تسجيل مستخدم جديد في Firebase Auth + تخزين بياناته في Firestore
   const form = document.getElementById("registerForm");
-  form.addEventListener("submit", (e) => {
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const user = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      password: document.getElementById("password").value
-    };
+    const fullName = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-    localStorage.setItem("user", JSON.stringify(user));
-    alert(currentLang === "ar" ? "تم التسجيل بنجاح!" : "Registration successful!");
-    window.location.href = "login.html";
+    try {
+      // إنشاء الحساب في Firebase Auth
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCred.user;
+
+      // حفظ بيانات المستخدم في Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: fullName,
+        email: email,
+        createdAt: new Date()
+      });
+
+      alert(i18n[currentLang].success);
+      window.location.href = "login.html";
+
+    } catch (error) {
+      alert(i18n[currentLang].fail + "\n" + error.message);
+    }
   });
 });
